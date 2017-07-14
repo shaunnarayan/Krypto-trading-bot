@@ -3,13 +3,13 @@ import 'reflect-metadata';
 
 (<any>global).jQuery = require("jquery");
 
-import {NgModule, NgZone, Component, Inject, OnInit, enableProdMode} from '@angular/core';
-import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
-import {FormsModule} from '@angular/forms';
-import {BrowserModule} from '@angular/platform-browser';
-import {AgGridModule} from 'ag-grid-angular/main';
-import {ChartModule} from 'angular2-highcharts';
-import {PopoverModule} from "ng4-popover";
+import { NgModule, NgZone, Component, Inject, OnInit, enableProdMode } from '@angular/core';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { FormsModule } from '@angular/forms';
+import { BrowserModule } from '@angular/platform-browser';
+import { AgGridModule } from 'ag-grid-angular/main';
+import { ChartModule } from 'angular2-highcharts';
+import { PopoverModule } from "ng4-popover";
 import Highcharts = require('highcharts');
 import Highstock = require('highcharts/highstock');
 require('highcharts/highcharts-more.js')(Highstock);
@@ -18,60 +18,60 @@ import moment = require("moment");
 
 import Models = require('../share/models');
 import Subscribe = require('./subscribe');
-import {SharedModule, FireFactory, SubscriberFactory, BaseCurrencyCellComponent, QuoteCurrencyCellComponent} from './shared_directives';
+import { SharedModule, FireFactory, SubscriberFactory, BaseCurrencyCellComponent, QuoteCurrencyCellComponent } from './shared_directives';
 import Pair = require('./pair');
-import {WalletPositionComponent} from './wallet-position';
-import {MarketQuotingComponent} from './market-quoting';
-import {MarketTradesComponent} from './market-trades';
-import {TradeSafetyComponent} from './trade-safety';
-import {OrdersComponent} from './orders';
-import {TradesComponent} from './trades';
-import {StatsComponent} from './stats';
+import { WalletPositionComponent } from './wallet-position';
+import { MarketQuotingComponent } from './market-quoting';
+import { MarketTradesComponent } from './market-trades';
+import { TradeSafetyComponent } from './trade-safety';
+import { OrdersComponent } from './orders';
+import { TradesComponent } from './trades';
+import { StatsComponent } from './stats';
 
 class DisplayOrder {
-  side : string;
-  price : number;
-  quantity : number;
-  timeInForce : string;
-  orderType : string;
+    side: string;
+    price: number;
+    quantity: number;
+    timeInForce: string;
+    orderType: string;
 
-  availableSides : string[];
-  availableTifs : string[];
-  availableOrderTypes : string[];
+    availableSides: string[];
+    availableTifs: string[];
+    availableOrderTypes: string[];
 
-  private static getNames(enumObject: any) {
-    var names: string[] = [];
-    for (var mem in enumObject) {
-      if (!enumObject.hasOwnProperty(mem)) continue;
-      if (parseInt(mem, 10) >= 0) {
-        names.push(String(enumObject[mem]));
-      }
+    private static getNames(enumObject: any) {
+        var names: string[] = [];
+        for (var mem in enumObject) {
+            if (!enumObject.hasOwnProperty(mem)) continue;
+            if (parseInt(mem, 10) >= 0) {
+                names.push(String(enumObject[mem]));
+            }
+        }
+        return names;
     }
-    return names;
-  }
 
-  private _fire: Subscribe.IFire<Models.OrderRequestFromUI>;
+    private _fire: Subscribe.IFire<Models.OrderRequestFromUI>;
 
-  constructor(
-    fireFactory: FireFactory
-  ) {
-    this.availableSides = DisplayOrder.getNames(Models.Side).slice(0,-1);
-    this.availableTifs = DisplayOrder.getNames(Models.TimeInForce);
-    this.availableOrderTypes = DisplayOrder.getNames(Models.OrderType);
-    this.timeInForce = this.availableTifs[2];
-    this.orderType = this.availableOrderTypes[0];
-    this._fire = fireFactory.getFire(Models.Topics.SubmitNewOrder);
-  }
+    constructor(
+        fireFactory: FireFactory
+    ) {
+        this.availableSides = DisplayOrder.getNames(Models.Side).slice(0, -1);
+        this.availableTifs = DisplayOrder.getNames(Models.TimeInForce);
+        this.availableOrderTypes = DisplayOrder.getNames(Models.OrderType);
+        this.timeInForce = this.availableTifs[2];
+        this.orderType = this.availableOrderTypes[0];
+        this._fire = fireFactory.getFire(Models.Topics.SubmitNewOrder);
+    }
 
-  public submit = () => {
-    if (!this.side || !this.price || !this.quantity || !this.timeInForce || !this.orderType) return;
-    this._fire.fire(new Models.OrderRequestFromUI(this.side, this.price, this.quantity, this.timeInForce, this.orderType));
-  };
+    public submit = () => {
+        if (!this.side || !this.price || !this.quantity || !this.timeInForce || !this.orderType) return;
+        this._fire.fire(new Models.OrderRequestFromUI(this.side, this.price, this.quantity, this.timeInForce, this.orderType));
+    };
 }
 
 @Component({
-  selector: 'ui',
-  template: `<div>
+    selector: 'ui',
+    template: `<div>
     <div *ngIf="!connected">
         <h4 class="text-danger text-center">{{ product.advert.environment ? product.advert.environment+' is d' : 'D' }}isconnected.</h4>
     </div>
@@ -442,7 +442,7 @@ class DisplayOrder {
                         <div [hidden]="!showStats" [ngClass]="showStats == 2 ? 'col-md-11 col-xs-12 absolute-charts' : 'col-md-11 col-xs-12 relative-charts'">
                           <market-stats [setShowStats]="!!showStats" [product]="product"></market-stats>
                         </div>
-                        <div [hidden]="showStats === 1" class="col-md-9 col-xs-12" style="padding-left:0px;padding-bottom:0px;">
+                        <div class="col-md-11 col-xs-12" style="padding-left:0px;padding-bottom:0px;">
                           <div class="row">
                             <trade-safety [tradeFreq]="tradeFreq" [product]="product"></trade-safety>
                           </div>
@@ -528,269 +528,269 @@ class DisplayOrder {
                             </div>
                           </div>
                         </div>
-                        <div [hidden]="showStats === 1" class="col-md-2 col-xs-12" style="padding-left:0px;">
+                        <!--<div [hidden]="showStats === 1" class="col-md-2 col-xs-12" style="padding-left:0px;">
                           <textarea [(ngModel)]="notepad" (ngModelChange)="changeNotepad(notepad)" placeholder="ephemeral notepad" class="ephemeralnotepad" style="height:69px;width: 100%;max-width: 100%;"></textarea>
                           <market-trades [product]="product"></market-trades>
-                        </div>
+                        </div>-->
                       </div>
                 </div>
             </div>
         </div>
     </div>
-    <address class="text-center">
+    <!--<address class="text-center">
       <small>
         <a href="{{ homepage }}/blob/master/README.md" target="_blank">README</a> - <a href="{{ homepage }}/blob/master/MANUAL.md" target="_blank">MANUAL</a> - <a href="{{ homepage }}" target="_blank">SOURCE</a> - <a href="#" (click)="changeTheme()">changeTheme(<span [hidden]="!system_theme">LIGHT</span><span [hidden]="system_theme">DARK</span>)</a> - <span title="Server used RAM" style="margin-top: 6px;display: inline-block;">{{ server_memory }}</span> - <span title="Client used RAM" style="margin-top: 6px;display: inline-block;">{{ client_memory }}</span> - <span title="Database Size" style="margin-top: 6px;display: inline-block;">{{ db_size }}</span> - <span title="Pings in memory" style="margin-top: 6px;display: inline-block;">{{ tradesLength }}</span> - <a href="#" (click)="openMatryoshka()">MATRYOSHKA</a> - <a href="{{ homepage }}/issues/new?title=%5Btopic%5D%20short%20and%20sweet%20description&body=description%0Aplease,%20consider%20to%20add%20all%20possible%20details%20%28if%20any%29%20about%20your%20new%20feature%20request%20or%20bug%20report%0A%0A%2D%2D%2D%0A%60%60%60%0Aapp%20exchange%3A%20{{ exchange_name }}/{{ pair_name.join('/') }}%0Aapp%20version%3A%20undisclosed%0A%60%60%60%0A![300px-spock_vulcan-salute3](https://cloud.githubusercontent.com/assets/1634027/22077151/4110e73e-ddb3-11e6-9d84-358e9f133d34.png)" target="_blank">CREATE ISSUE</a> - <a title="irc://irc.domirc.net:6667/##tradingBot" href="irc://irc.domirc.net:6667/##tradingBot">IRC</a>
       </small>
-    </address>
+    </address>-->
     <iframe id="matryoshka" style="margin:0px;padding:0px;border:0px;width:100%;height:0px;" src="about:blank"></iframe>
   </div>`
 })
 class ClientComponent implements OnInit {
 
-  public homepage: string;
-  public matryoshka: string;
-  public server_memory: string;
-  public client_memory: string;
-  public db_size: string;
-  public notepad: string;
-  public connected: boolean;
-  public showConfigs: boolean = false;
-  public showStats: number = 0;
-  public order: DisplayOrder;
-  public pair: Pair.DisplayPair;
-  public exchange_name: string;
-  public exchange_market: string;
-  public exchange_orders: string;
-  public pair_name: string[];
-  public cancelAllOrders = () => {};
-  public cleanAllClosedOrders = () => {};
-  public cleanAllOrders = () => {};
-  public toggleConfigs = (showConfigs:boolean) => {};
-  public changeNotepad = (content: string) => {};
-  public toggleStats = () => {
-    if (++this.showStats>=3) this.showStats = 0;
-  };
-  public toggleWatch = (watchExchange: string, watchPair: string) => {
-    if (window.parent !== window) {
-      window.parent.postMessage('cryptoWatch='+watchExchange+','+watchPair, '*');
-      return;
+    public homepage: string;
+    public matryoshka: string;
+    public server_memory: string;
+    public client_memory: string;
+    public db_size: string;
+    public notepad: string;
+    public connected: boolean;
+    public showConfigs: boolean = false;
+    public showStats: number = 2;
+    public order: DisplayOrder;
+    public pair: Pair.DisplayPair;
+    public exchange_name: string;
+    public exchange_market: string;
+    public exchange_orders: string;
+    public pair_name: string[];
+    public cancelAllOrders = () => { };
+    public cleanAllClosedOrders = () => { };
+    public cleanAllOrders = () => { };
+    public toggleConfigs = (showConfigs: boolean) => { };
+    public changeNotepad = (content: string) => { };
+    public toggleStats = () => {
+        if (++this.showStats >= 3) this.showStats = 0;
+    };
+    public toggleWatch = (watchExchange: string, watchPair: string) => {
+        if (window.parent !== window) {
+            window.parent.postMessage('cryptoWatch=' + watchExchange + ',' + watchPair, '*');
+            return;
+        }
+        var self = this;
+        var toggleWatch = function () {
+            self._toggleWatch(watchExchange, watchPair);
+        };
+        if (!(<any>window).cryptowatch) (function (d, script) {
+            script = d.createElement('script');
+            script.type = 'text/javascript';
+            script.async = true;
+            script.onload = toggleWatch;
+            script.src = 'https://static.cryptowat.ch/assets/scripts/embed.bundle.js';
+            d.getElementsByTagName('head')[0].appendChild(script);
+        }(document));
+        else toggleWatch();
+    };
+    public _toggleWatch = (watchExchange: string, watchPair: string) => {
+        if (!document.getElementById('cryptoWatch' + watchExchange + watchPair)) {
+            (<any>window).setDialog('cryptoWatch' + watchExchange + watchPair, 'open', { title: watchExchange.toUpperCase() + ' ' + watchPair.toUpperCase().replace('-', '/'), width: 800, height: 400, content: `<div id="container` + watchExchange + watchPair + `" style="width:100%;height:100%;"></div>` });
+            if (!jQuery('#cryptoWatch' + watchExchange + watchPair + '.resizable').length) (<any>jQuery)('#cryptoWatch' + watchExchange + watchPair).resizable({ handleSelector: '#cryptoWatch' + watchExchange + watchPair + ' .dialog-resize' });
+            (new (<any>window).cryptowatch.Embed(watchExchange, watchPair.replace('-', ''), { timePeriod: '1d', customColorScheme: { bg: "000000", text: "b2b2b2", textStrong: "e5e5e5", textWeak: "7f7f7f", short: "FD4600", shortFill: "FF672C", long: "6290FF", longFill: "002782", cta: "363D52", ctaHighlight: "414A67", alert: "FFD506" } })).mount('#container' + watchExchange + watchPair);
+        } else (<any>window).setDialog('cryptoWatch' + watchExchange + watchPair, 'close', { content: '' });
+    };
+    public openMatryoshka = () => {
+        const url = window.prompt('Enter the URL of another instance:', this.matryoshka || 'https://');
+        jQuery('#matryoshka').attr('src', url || 'about:blank').height((url && url != 'https://') ? 589 : 0);
+    };
+    public resizeMatryoshka = () => {
+        if (window.parent === window) return;
+        window.parent.postMessage('height=' + jQuery('body').height(), '*');
+    };
+    public product: Models.ProductState = {
+        advert: new Models.ProductAdvertisement(null, null, null, null, null, .01),
+        fixed: 2
+    };
+
+    private user_theme: string = null;
+    private system_theme: string = null;
+    public tradeFreq: number = 0;
+    public tradesLength: number = 0;
+
+    constructor(
+        @Inject(NgZone) private zone: NgZone,
+        @Inject(SubscriberFactory) private subscriberFactory: SubscriberFactory,
+        @Inject(FireFactory) private fireFactory: FireFactory
+    ) { }
+
+    ngOnInit() {
+        this.cancelAllOrders = () => this.fireFactory
+            .getFire(Models.Topics.CancelAllOrders)
+            .fire();
+
+        this.cleanAllClosedOrders = () => this.fireFactory
+            .getFire(Models.Topics.CleanAllClosedOrders)
+            .fire();
+
+        this.cleanAllOrders = () => this.fireFactory
+            .getFire(Models.Topics.CleanAllOrders)
+            .fire();
+
+        this.changeNotepad = (content: string) => this.fireFactory
+            .getFire(Models.Topics.Notepad)
+            .fire(content);
+
+        this.toggleConfigs = (showConfigs: boolean) => {
+            this.fireFactory
+                .getFire(Models.Topics.ToggleConfigs)
+                .fire(showConfigs);
+            setTimeout(this.resizeMatryoshka, 100);
+        }
+
+        window.addEventListener("message", e => {
+            if (e.data.indexOf('height=') === 0) {
+                jQuery('#matryoshka').height(e.data.replace('height=', ''));
+                this.resizeMatryoshka();
+            }
+            else if (e.data.indexOf('cryptoWatch=') === 0) {
+                var data = e.data.replace('cryptoWatch=', '').split(',');
+                this._toggleWatch(data[0], data[1]);
+            }
+        }, false);
+
+        this.reset(false);
+
+        this.order = new DisplayOrder(this.fireFactory);
+
+        this.subscriberFactory
+            .getSubscriber(this.zone, Models.Topics.ProductAdvertisement)
+            .registerSubscriber(this.onAdvert)
+            .registerDisconnectedHandler(() => this.reset(false));
+
+        this.subscriberFactory
+            .getSubscriber(this.zone, Models.Topics.ApplicationState)
+            .registerSubscriber(this.onAppState);
+
+        this.subscriberFactory
+            .getSubscriber(this.zone, Models.Topics.Notepad)
+            .registerSubscriber(this.onNotepad);
+
+        this.subscriberFactory
+            .getSubscriber(this.zone, Models.Topics.ToggleConfigs)
+            .registerSubscriber(this.onToggleConfigs);
     }
-    var self = this;
-    var toggleWatch = function() {
-      self._toggleWatch(watchExchange, watchPair);
-     };
-    if (!(<any>window).cryptowatch) (function(d, script) {
-        script = d.createElement('script');
-        script.type = 'text/javascript';
-        script.async = true;
-        script.onload = toggleWatch;
-        script.src = 'https://static.cryptowat.ch/assets/scripts/embed.bundle.js';
-        d.getElementsByTagName('head')[0].appendChild(script);
-      }(document));
-    else toggleWatch();
-  };
-  public _toggleWatch = (watchExchange: string, watchPair: string) => {
-    if (!document.getElementById('cryptoWatch'+watchExchange+watchPair)) {
-      (<any>window).setDialog('cryptoWatch'+watchExchange+watchPair, 'open', {title: watchExchange.toUpperCase()+' '+watchPair.toUpperCase().replace('-','/'),width: 800,height: 400,content: `<div id="container`+watchExchange+watchPair+`" style="width:100%;height:100%;"></div>`});
-      if (!jQuery('#cryptoWatch'+watchExchange+watchPair+'.resizable').length) (<any>jQuery)('#cryptoWatch'+watchExchange+watchPair).resizable({handleSelector: '#cryptoWatch'+watchExchange+watchPair+' .dialog-resize'});
-      (new (<any>window).cryptowatch.Embed(watchExchange, watchPair.replace('-',''), {timePeriod: '1d',customColorScheme: {bg:"000000",text:"b2b2b2",textStrong:"e5e5e5",textWeak:"7f7f7f",short:"FD4600",shortFill:"FF672C",long:"6290FF",longFill:"002782",cta:"363D52",ctaHighlight:"414A67",alert:"FFD506"}})).mount('#container'+watchExchange+watchPair);
-    } else (<any>window).setDialog('cryptoWatch'+watchExchange+watchPair, 'close', {content:''});
-  };
-  public openMatryoshka = () => {
-    const url = window.prompt('Enter the URL of another instance:',this.matryoshka||'https://');
-    jQuery('#matryoshka').attr('src', url||'about:blank').height((url&&url!='https://')?589:0);
-  };
-  public resizeMatryoshka = () => {
-    if (window.parent === window) return;
-    window.parent.postMessage('height='+jQuery('body').height(), '*');
-  };
-  public product: Models.ProductState = {
-    advert: new Models.ProductAdvertisement(null, null, null, null, null, .01),
-    fixed: 2
-  };
 
-  private user_theme: string = null;
-  private system_theme: string = null;
-  public tradeFreq: number = 0;
-  public tradesLength: number = 0;
-
-  constructor(
-    @Inject(NgZone) private zone: NgZone,
-    @Inject(SubscriberFactory) private subscriberFactory: SubscriberFactory,
-    @Inject(FireFactory) private fireFactory: FireFactory
-  ) {}
-
-  ngOnInit() {
-    this.cancelAllOrders = () => this.fireFactory
-      .getFire(Models.Topics.CancelAllOrders)
-      .fire();
-
-    this.cleanAllClosedOrders = () => this.fireFactory
-      .getFire(Models.Topics.CleanAllClosedOrders)
-      .fire();
-
-    this.cleanAllOrders = () => this.fireFactory
-      .getFire(Models.Topics.CleanAllOrders)
-      .fire();
-
-    this.changeNotepad = (content:string) => this.fireFactory
-      .getFire(Models.Topics.Notepad)
-      .fire(content);
-
-    this.toggleConfigs = (showConfigs:boolean) => {
-      this.fireFactory
-        .getFire(Models.Topics.ToggleConfigs)
-        .fire(showConfigs);
-      setTimeout(this.resizeMatryoshka, 100);
+    private onNotepad = (notepad: string) => {
+        this.notepad = notepad;
     }
 
-    window.addEventListener("message", e => {
-      if (e.data.indexOf('height=')===0) {
-        jQuery('#matryoshka').height(e.data.replace('height=',''));
-        this.resizeMatryoshka();
-      }
-      else if (e.data.indexOf('cryptoWatch=')===0) {
-        var data = e.data.replace('cryptoWatch=','').split(',');
-        this._toggleWatch(data[0], data[1]);
-      }
-    }, false);
+    private onToggleConfigs = (showConfigs: boolean) => {
+        this.showConfigs = showConfigs;
+    }
 
-    this.reset(false);
+    public onTradesLength(tradesLength: number) {
+        this.tradesLength = tradesLength;
+    }
 
-    this.order = new DisplayOrder(this.fireFactory);
+    private reset = (connected: boolean) => {
+        this.connected = connected;
+        this.pair_name = [null, null];
+        this.exchange_name = null;
+        this.exchange_market = null;
+        this.exchange_orders = null;
+        this.pair = null;
+    }
 
-    this.subscriberFactory
-      .getSubscriber(this.zone, Models.Topics.ProductAdvertisement)
-      .registerSubscriber(this.onAdvert)
-      .registerDisconnectedHandler(() => this.reset(false));
+    private bytesToSize = (input: number, precision: number) => {
+        let unit = ['', 'K', 'M', 'G', 'T', 'P'];
+        let index = Math.floor(Math.log(input) / Math.log(1024));
+        if (index >= unit.length) return input + 'B';
+        return (input / Math.pow(1024, index)).toFixed(precision) + unit[index] + 'B'
+    }
 
-    this.subscriberFactory
-      .getSubscriber(this.zone, Models.Topics.ApplicationState)
-      .registerSubscriber(this.onAppState);
+    private onAppState = (as: Models.ApplicationState) => {
+        this.server_memory = this.bytesToSize(as.memory, 0);
+        this.client_memory = this.bytesToSize((<any>window.performance).memory ? (<any>window.performance).memory.usedJSHeapSize : 1, 0);
+        this.db_size = this.bytesToSize(as.dbsize, 0);
+        this.system_theme = this.getTheme(as.hour);
+        this.tradeFreq = (as.freq);
+        this.setTheme();
+    }
 
-    this.subscriberFactory
-      .getSubscriber(this.zone, Models.Topics.Notepad)
-      .registerSubscriber(this.onNotepad);
+    private setTheme = () => {
+        if (jQuery('#daynight').attr('href') != '/css/bootstrap-theme' + this.system_theme + '.min.css')
+            jQuery('#daynight').attr('href', '/css/bootstrap-theme' + this.system_theme + '.min.css');
+    }
 
-    this.subscriberFactory
-      .getSubscriber(this.zone, Models.Topics.ToggleConfigs)
-      .registerSubscriber(this.onToggleConfigs);
-  }
+    public changeTheme = () => {
+        this.user_theme = this.user_theme !== null ? (this.user_theme == '' ? '-dark' : '') : (this.system_theme == '' ? '-dark' : '');
+        this.system_theme = this.user_theme;
+        this.setTheme();
+    }
 
-  private onNotepad = (notepad : string) => {
-    this.notepad = notepad;
-  }
+    private getTheme = (hour: number) => {
+        return ('-dark');
+    }
 
-  private onToggleConfigs = (showConfigs: boolean) => {
-    this.showConfigs = showConfigs;
-  }
-
-  public onTradesLength(tradesLength: number) {
-    this.tradesLength = tradesLength;
-  }
-
-  private reset = (connected: boolean) => {
-    this.connected = connected;
-    this.pair_name = [null, null];
-    this.exchange_name = null;
-    this.exchange_market = null;
-    this.exchange_orders = null;
-    this.pair = null;
-  }
-
-  private bytesToSize = (input:number, precision:number) => {
-    let unit = ['', 'K', 'M', 'G', 'T', 'P'];
-    let index = Math.floor(Math.log(input) / Math.log(1024));
-    if (index >= unit.length) return input + 'B';
-    return (input / Math.pow(1024, index)).toFixed(precision) + unit[index] + 'B'
-  }
-
-  private onAppState = (as : Models.ApplicationState) => {
-    this.server_memory = this.bytesToSize(as.memory, 0);
-    this.client_memory = this.bytesToSize((<any>window.performance).memory ? (<any>window.performance).memory.usedJSHeapSize : 1, 0);
-    this.db_size = this.bytesToSize(as.dbsize, 0);
-    this.system_theme = this.getTheme(as.hour);
-    this.tradeFreq = (as.freq);
-    this.setTheme();
-  }
-
-  private setTheme = () => {
-    if (jQuery('#daynight').attr('href')!='/css/bootstrap-theme'+this.system_theme+'.min.css')
-      jQuery('#daynight').attr('href', '/css/bootstrap-theme'+this.system_theme+'.min.css');
-  }
-
-  public changeTheme = () => {
-    this.user_theme = this.user_theme!==null?(this.user_theme==''?'-dark':''):(this.system_theme==''?'-dark':'');
-    this.system_theme = this.user_theme;
-    this.setTheme();
-  }
-
-  private getTheme = (hour: number) => {
-    return this.user_theme!==null?this.user_theme:((hour<9 || hour>=21)?'-dark':'');
-  }
-
-  private onAdvert = (pa : Models.ProductAdvertisement) => {
-    this.connected = true;
-    window.document.title = '['+pa.environment+']';
-    this.matryoshka = pa.matryoshka;
-    this.system_theme = this.getTheme(moment.utc().hours());
-    this.setTheme();
-    this.pair_name = [Models.Currency[pa.pair.base], Models.Currency[pa.pair.quote]];
-    this.exchange_name = Models.Exchange[pa.exchange];
-    this.exchange_market = this.exchange_name=='OkCoin'
-      ? 'https://www.okcoin.'+(Models.Currency[pa.pair.quote]=='CNY'?'cn':'com')+'/market.html'
-      : (this.exchange_name=='Coinbase'
-        ? 'https://gdax.com/trade/'+this.pair_name.join('-')
-        : (this.exchange_name=='Bitfinex'
-            ? 'https://www.bitfinex.com/trading/'+this.pair_name.join('')
-            : null
-          )
-      );
-    this.exchange_orders = this.exchange_name=='OkCoin'
-      ? 'https://www.okcoin.'+(Models.Currency[pa.pair.quote]=='CNY'?'cn':'com')+'/trade/entrust.do'
-      : (this.exchange_name=='Coinbase'
-        ? 'https://www.gdax.com/orders/'+this.pair_name.join('-')
-        : (this.exchange_name=='Bitfinex'
-          ? 'https://www.bitfinex.com/reports/orders'
-          : null
-        )
-      );
-    this.pair = new Pair.DisplayPair(this.zone, this.subscriberFactory, this.fireFactory);
-    this.product.advert = pa;
-    this.homepage = pa.homepage;
-    this.product.fixed = Math.max(0, Math.floor(Math.log10(pa.minTick)) * -1);
-    setTimeout(this.resizeMatryoshka, 5000);
-  }
+    private onAdvert = (pa: Models.ProductAdvertisement) => {
+        this.connected = true;
+        window.document.title = '[' + pa.environment + ']';
+        this.matryoshka = pa.matryoshka;
+        this.system_theme = this.getTheme(moment.utc().hours());
+        this.setTheme();
+        this.pair_name = [Models.Currency[pa.pair.base], Models.Currency[pa.pair.quote]];
+        this.exchange_name = Models.Exchange[pa.exchange];
+        this.exchange_market = this.exchange_name == 'OkCoin'
+            ? 'https://www.okcoin.' + (Models.Currency[pa.pair.quote] == 'CNY' ? 'cn' : 'com') + '/market.html'
+            : (this.exchange_name == 'Coinbase'
+                ? 'https://gdax.com/trade/' + this.pair_name.join('-')
+                : (this.exchange_name == 'Bitfinex'
+                    ? 'https://www.bitfinex.com/trading/' + this.pair_name.join('')
+                    : null
+                )
+            );
+        this.exchange_orders = this.exchange_name == 'OkCoin'
+            ? 'https://www.okcoin.' + (Models.Currency[pa.pair.quote] == 'CNY' ? 'cn' : 'com') + '/trade/entrust.do'
+            : (this.exchange_name == 'Coinbase'
+                ? 'https://www.gdax.com/orders/' + this.pair_name.join('-')
+                : (this.exchange_name == 'Bitfinex'
+                    ? 'https://www.bitfinex.com/reports/orders'
+                    : null
+                )
+            );
+        this.pair = new Pair.DisplayPair(this.zone, this.subscriberFactory, this.fireFactory);
+        this.product.advert = pa;
+        this.homepage = pa.homepage;
+        this.product.fixed = Math.max(0, Math.floor(Math.log10(pa.minTick)) * -1);
+        setTimeout(this.resizeMatryoshka, 5000);
+    }
 }
 
 @NgModule({
-  imports: [
-    SharedModule,
-    BrowserModule,
-    FormsModule,
-    PopoverModule,
-    AgGridModule.withComponents([
-      BaseCurrencyCellComponent,
-      QuoteCurrencyCellComponent
-    ]),
-    ChartModule.forRoot(Highcharts),
-    ChartModule.forRoot(Highstock)
-  ],
-  declarations: [
-    ClientComponent,
-    OrdersComponent,
-    TradesComponent,
-    MarketQuotingComponent,
-    MarketTradesComponent,
-    WalletPositionComponent,
-    TradeSafetyComponent,
-    BaseCurrencyCellComponent,
-    QuoteCurrencyCellComponent,
-    StatsComponent
-  ],
-  bootstrap: [ClientComponent]
+    imports: [
+        SharedModule,
+        BrowserModule,
+        FormsModule,
+        PopoverModule,
+        AgGridModule.withComponents([
+            BaseCurrencyCellComponent,
+            QuoteCurrencyCellComponent
+        ]),
+        ChartModule.forRoot(Highcharts),
+        ChartModule.forRoot(Highstock)
+    ],
+    declarations: [
+        ClientComponent,
+        OrdersComponent,
+        TradesComponent,
+        MarketQuotingComponent,
+        MarketTradesComponent,
+        WalletPositionComponent,
+        TradeSafetyComponent,
+        BaseCurrencyCellComponent,
+        QuoteCurrencyCellComponent,
+        StatsComponent
+    ],
+    bootstrap: [ClientComponent]
 })
-class ClientModule {}
+class ClientModule { }
 
 enableProdMode();
 platformBrowserDynamic().bootstrapModule(ClientModule);
