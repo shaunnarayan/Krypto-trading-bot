@@ -5,6 +5,7 @@
 #include <chrono>
 #include <math.h>
 #include <algorithm>
+#include <vector>
 #include <map>
 
 #include <node.h>
@@ -23,14 +24,16 @@ using namespace v8;
 
 #include "_b64.h"
 
-#include "stdev.h"
-#include "sqlite.h"
+#include "ev.h"
+#include "sd.h"
+#include "db.h"
 #include "ui.h"
 
 namespace K {
   void main(Local<Object> exports) {
-    Stdev::main(exports);
-    SQLite::main(exports);
+    EV::main(exports);
+    SD::main(exports);
+    DB::main(exports);
     UI::main(exports);
   }
 }

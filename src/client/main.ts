@@ -80,7 +80,7 @@ class DisplayOrder {
             <div>
                 <div style="padding: 5px;padding-top:10px;margin-top:7px;" [ngClass]="pair.connected ? 'bg-success img-rounded' : 'bg-danger img-rounded'">
                     <div class="row" [hidden]="!showConfigs">
-                        <div class="col-md-10 col-xs-12">
+                        <div class="col-md-12 col-xs-12">
                             <div class="row">
                                 <table class="table table-responsive table-bordered" style="margin-bottom:0px;">
                                     <thead>
@@ -299,6 +299,7 @@ class DisplayOrder {
                                             <th *ngIf="pair.quotingParameters.display.quotingStdevProtection">periodsˢᵗᵈᶜᵛ</th>
                                             <th *ngIf="pair.quotingParameters.display.quotingStdevProtection">factor</th>
                                             <th *ngIf="pair.quotingParameters.display.quotingStdevProtection">BB?</th>
+                                            <th>delayAPI</th>
                                             <th>cxl?</th>
                                             <th>profit</th>
                                             <th>Kmemory</th>
@@ -338,7 +339,7 @@ class DisplayOrder {
                                                    onClick="this.select()"
                                                    [(ngModel)]="pair.quotingParameters.display.tradeRateSeconds">
                                             </td>
-                                            <td style="border-bottom: 3px solid #F0A0A0;">
+                                            <td style="text-align: center;border-bottom: 3px solid #F0A0A0;">
                                                 <input type="checkbox"
                                                    [(ngModel)]="pair.quotingParameters.display.quotingEwmaProtection">
                                             </td>
@@ -366,11 +367,17 @@ class DisplayOrder {
                                                    onClick="this.select()"
                                                    [(ngModel)]="pair.quotingParameters.display.quotingStdevProtectionFactor">
                                             </td>
-                                            <td style="border-bottom: 3px solid #AF451E;" *ngIf="pair.quotingParameters.display.quotingStdevProtection">
+                                            <td style="text-align: center;border-bottom: 3px solid #AF451E;" *ngIf="pair.quotingParameters.display.quotingStdevProtection">
                                                 <input type="checkbox"
                                                    [(ngModel)]="pair.quotingParameters.display.quotingStdevBollingerBands">
                                             </td>
-                                            <td style="border-bottom: 3px solid #A0A0A0;">
+                                            <td style="width:88px;border-bottom: 3px solid #A0A0A0;">
+                                                <input class="form-control input-sm"
+                                                   type="number" step="1" min="0"
+                                                   onClick="this.select()"
+                                                   [(ngModel)]="pair.quotingParameters.display.delayAPI">
+                                            </td>
+                                            <td style="text-align: center;border-bottom: 3px solid #A0A0A0;">
                                                 <input type="checkbox"
                                                    [(ngModel)]="pair.quotingParameters.display.cancelOrdersAuto">
                                             </td>
@@ -392,19 +399,19 @@ class DisplayOrder {
                                                    onClick="this.select()"
                                                    [(ngModel)]="pair.quotingParameters.display.delayUI">
                                             </td>
-                                            <td style="border-bottom: 3px solid #A0A0A0;">
+                                            <td style="text-align: center;border-bottom: 3px solid #A0A0A0;">
                                                 <input type="checkbox"
                                                    [(ngModel)]="pair.quotingParameters.display.audio">
                                             </td>
-                                            <td style="border-bottom: 3px solid #A0A0A0;">
-                                                <input class="btn btn-default btn col-md-1 col-xs-6"
+                                            <td style="text-align: center;border-bottom: 3px solid #A0A0A0;">
+                                                <input class="btn btn-default btn"
                                                     style="width:55px"
                                                     type="button"
                                                     (click)="pair.quotingParameters.reset()"
                                                     value="Reset" />
                                             </td>
-                                            <td style="border-bottom: 3px solid #A0A0A0;">
-                                                <input class="btn btn-default btn col-md-1 col-xs-6"
+                                            <td style="text-align: center;border-bottom: 3px solid #A0A0A0;">
+                                                <input class="btn btn-default btn"
                                                     style="width:50px"
                                                     type="submit"
                                                     [disabled]="!pair.quotingParameters.connected"
@@ -415,9 +422,6 @@ class DisplayOrder {
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
-                        <div class="col-md-2 col-xs-12">
-                          <textarea [(ngModel)]="notepad" (ngModelChange)="changeNotepad(notepad)" placeholder="ephemeral notepad" class="ephemeralnotepad" style="height:153px;width: 100%;max-width: 100%;"></textarea>
                         </div>
                     </div>
                     <div class="row">
@@ -525,7 +529,8 @@ class DisplayOrder {
                           </div>
                         </div>
                         <div [hidden]="showStats === 1" class="col-md-2 col-xs-12" style="padding-left:0px;">
-                            <market-trades [product]="product"></market-trades>
+                          <textarea [(ngModel)]="notepad" (ngModelChange)="changeNotepad(notepad)" placeholder="ephemeral notepad" class="ephemeralnotepad" style="height:69px;width: 100%;max-width: 100%;"></textarea>
+                          <market-trades [product]="product"></market-trades>
                         </div>
                       </div>
                 </div>

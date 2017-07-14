@@ -13,9 +13,8 @@ export class Timestamped<T> implements ITimestamped {
 }
 
 export var Prefixes = {
-  SUBSCRIBE: '_',
-  SNAPSHOT: '=',
-  MESSAGE: '-'
+SNAPSHOT: '=',
+MESSAGE: '-'
 }
 
 export var Topics = {
@@ -23,16 +22,16 @@ export var Topics = {
   Quote: 'b',
   ActiveSubscription: 'c',
   ActiveState: 'd',
-  MarketData: 'e',
+MarketData: 'e',
   QuotingParametersChange: 'f',
   SafetySettings: 'g',
   Product: 'h',
-  OrderStatusReports: 'i',
+OrderStatusReports: 'i',
   ProductAdvertisement: 'j',
   ApplicationState: 'k',
   Notepad: 'l',
   ToggleConfigs: 'm',
-  Position: 'n',
+Position: 'n',
   ExchangeConnectivity: 'o',
   SubmitNewOrder: 'p',
   CancelOrder: 'q',
@@ -110,7 +109,7 @@ export enum Currency {
     DCR, DGB, EMC2, EXP, FCT, FLDC, FLO, GAME, GNO, GNT, GRC, HUC, LBC, NAUT,
     NAV, NEOS, NMC, NOTE, NXC, OMNI, PASC, PINK, POT, PPC, RADS, REP, RIC, SBD,
     SC, SJCX, STR, STRAT, SYS, VIA, VRC, VTC, XBC, XCP, XPM, XVC, USD, USDT,
-    EOS
+    EOS, SAN
 }
 
 export function toCurrency(c: string) : Currency|undefined {
@@ -364,6 +363,7 @@ export interface QuotingParameters {
     quotingStdevProtectionPeriods?: number;
     aprMultiplier?: number;
     sopWidthMultiplier?: number;
+    delayAPI?: number;
     cancelOrdersAuto?: boolean;
     cleanPongsAuto?: number;
     stepOverSize?: number;
