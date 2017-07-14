@@ -1,10 +1,10 @@
-import {NgZone, Component, Inject, Input, OnInit} from '@angular/core';
-import {GridOptions, ColDef, RowNode} from "ag-grid/main";
+import { NgZone, Component, Inject, Input, OnInit } from '@angular/core';
+import { GridOptions, ColDef, RowNode } from "ag-grid/main";
 import moment = require('moment');
 
 import Models = require('../share/models');
 import Subscribe = require('./subscribe');
-import {SubscriberFactory, FireFactory, BaseCurrencyCellComponent, QuoteCurrencyCellComponent} from './shared_directives';
+import { SubscriberFactory, FireFactory, BaseCurrencyCellComponent, QuoteCurrencyCellComponent } from './shared_directives';
 
 @Component({
   selector: 'order-list',
@@ -22,14 +22,14 @@ export class OrdersComponent implements OnInit {
     if (connected) return;
     if (!this.gridOptions.api) return;
     this.gridOptions.api.setRowData([]);
-    setTimeout(()=>this.gridOptions.api.refreshView(),0);
+    setTimeout(() => this.gridOptions.api.refreshView(), 0);
   }
 
   constructor(
     @Inject(NgZone) private zone: NgZone,
     @Inject(SubscriberFactory) private subscriberFactory: SubscriberFactory,
     @Inject(FireFactory) private fireFactory: FireFactory
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.gridOptions.rowData = [];
@@ -54,46 +54,59 @@ export class OrdersComponent implements OnInit {
 
   private createColumnDefs = (): ColDef[] => {
     return [
-      { width: 30, field: "cancel", headerName: 'cxl', cellRenderer: (params) => {
-        return '<button type="button" class="btn btn-danger btn-xs"><span data-action-type="remove" style="font-size: 16px;font-weight: bold;padding: 0px;line-height: 12px;">&times;</span></button>';
-      } },
-      { width: 82, field: 'time', headerName: 'time', cellRenderer:(params) => {
+      {
+        width: 30, field: "cancel", headerName: 'cxl', cellRenderer: (params) => {
+          return '<button type="button" class="btn btn-danger btn-xs"><span data-action-type="remove" style="font-size: 16px;font-weight: bold;padding: 0px;line-height: 12px;">&times;</span></button>';
+        }
+      },
+      {
+        width: 82, field: 'time', headerName: 'time', cellRenderer: (params) => {
           return (params.value) ? params.value.format('HH:mm:ss,SSS') : '';
         },
         cellClass: 'fs11px', comparator: (a: moment.Moment, b: moment.Moment) => a.diff(b)
       },
-      { width: 40, field: 'side', headerName: 'side' , cellRenderer:(params) => {
+      {
+        width: 40, field: 'side', headerName: 'side', cellRenderer: (params) => {
           return (params.data.pong ? '¯' : '_') + params.value;
-      }, cellClass: (params) => {
-        if (params.value === 'Bid') return 'buy';
-        else if (params.value === 'Ask') return "sell";
-      }},
-      { width: 74, field: 'price', headerName: 'px',
-      sort: 'desc',  cellClass: (params) => {
-        return (params.data.side === 'Ask') ? "sell" : "buy";
-      }, cellRendererFramework: QuoteCurrencyCellComponent},
-      { width: 60, field: 'lvQty', headerName: 'qty', cellClass: (params) => {
-        return (params.data.side === 'Ask') ? "sell" : "buy";
-      }, cellRendererFramework: BaseCurrencyCellComponent},
-      { width: 74, field: 'value', headerName: 'value', cellClass: (params) => {
-        return (params.data.side === 'Ask') ? "sell" : "buy";
-      }, cellRendererFramework: QuoteCurrencyCellComponent},
+        }, cellClass: (params) => {
+          if (params.value === 'Bid') return 'buy';
+          else if (params.value === 'Ask') return "sell";
+        }
+      },
+      {
+        width: 74, field: 'price', headerName: 'px',
+        sort: 'desc', cellClass: (params) => {
+          return (params.data.side === 'Ask') ? "sell" : "buy";
+        }, cellRendererFramework: QuoteCurrencyCellComponent
+      },
+      {
+        width: 60, field: 'lvQty', headerName: 'qty', cellClass: (params) => {
+          return (params.data.side === 'Ask') ? "sell" : "buy";
+        }, cellRendererFramework: BaseCurrencyCellComponent
+      },
+      {
+        width: 74, field: 'value', headerName: 'value', cellClass: (params) => {
+          return (params.data.side === 'Ask') ? "sell" : "buy";
+        }, cellRendererFramework: QuoteCurrencyCellComponent
+      },
       { width: 45, field: 'type', headerName: 'type' },
       { width: 40, field: 'tif', headerName: 'tif' },
-      { width: 45, field: 'lat', headerName: 'lat'},
-      { width: 90, field: 'orderId', headerName: 'openOrderId', cellRenderer:(params) => {
+      { width: 90, field: 'lat', headerName: 'lat' },
+      {
+        width: 90, field: 'orderId', headerName: 'openOrderId', cellRenderer: (params) => {
           return (params.value) ? params.value.toString().split('-')[0] : '';
-        }}
+        }
+      }
     ];
   }
 
   public onCellClicked = ($event) => {
-    if ($event.event.target.getAttribute("data-action-type")!='remove') return;
+    if ($event.event.target.getAttribute("data-action-type") != 'remove') return;
     this.fireCxl.fire({
       orderId: $event.data.orderId,
       exchange: $event.data.exchange
     });
-    this.gridOptions.api.updateRowData({remove:[$event.data]});
+    this.gridOptions.api.updateRowData({ remove: [$event.data] });
   }
 
   private addRowData = (o) => {
@@ -106,38 +119,40 @@ export class OrdersComponent implements OnInit {
     let isClosed: boolean = (o[1] == Models.OrderStatus.Cancelled
       || o[1] == Models.OrderStatus.Complete);
     this.gridOptions.api.forEachNode((node: RowNode) => {
-      if (!exists && node.data.orderId==o[0]) {
+      if (!exists && node.data.orderId == o[0]) {
         exists = true;
-        if (isClosed) this.gridOptions.api.updateRowData({remove:[node.data]});
+        if (isClosed) this.gridOptions.api.updateRowData({ remove: [node.data] });
         else {
           node.setData(Object.assign(node.data, {
             time: (moment.isMoment(o[5]) ? o[5] : moment(o[5])),
             price: o[3],
             value: Math.round(o[3] * o[4] * 100) / 100,
             tif: Models.TimeInForce[o[8]],
-            lat: o[9]+'ms',
+            lat: o[9] + 'ms',
             lvQty: o[10]
           }));
         }
       }
     });
-    setTimeout(()=>this.gridOptions.api.refreshView(),0);
+    setTimeout(() => this.gridOptions.api.refreshView(), 0);
     if (!exists && !isClosed)
-      this.gridOptions.api.updateRowData({add:[{
-        orderId: o[0],
-        side: Models.Side[o[2]],
-        price: o[3],
-        value: Math.round(o[3] * o[4] * 100) / 100,
-        exchange: o[6],
-        type: Models.OrderType[o[7]],
-        tif: Models.TimeInForce[o[8]],
-        lat: o[9]+'ms',
-        lvQty: o[10],
-        pong: o[11],
-        time: (moment.isMoment(o[5]) ? o[5] : moment(o[5])),
-        quoteSymbol: Models.Currency[this.product.advert.pair.quote],
-        productFixed: this.product.fixed
-      }]});
+      this.gridOptions.api.updateRowData({
+        add: [{
+          orderId: o[0],
+          side: Models.Side[o[2]],
+          price: o[3],
+          value: Math.round(o[3] * o[4] * 100) / 100,
+          exchange: o[6],
+          type: Models.OrderType[o[7]],
+          tif: Models.TimeInForce[o[8]],
+          lat: o[9] + 'ms',
+          lvQty: o[10],
+          pong: o[11],
+          time: (moment.isMoment(o[5]) ? o[5] : moment(o[5])),
+          quoteSymbol: Models.Currency[this.product.advert.pair.quote],
+          productFixed: this.product.fixed
+        }]
+      });
   }
 }
 
