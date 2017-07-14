@@ -6,7 +6,7 @@ import { SubscriberFactory } from './shared_directives';
 
 @Component({
   selector: 'market-stats',
-  template: `<div class="col-md-6 col-xs-6" style="position:relative;top:450px;left:-100px;">
+  template: `<div class="col-md-6 col-xs-6" style="position:relative;top:300px;left:-100px;">
   <table><tr><td>
     <chart style="position:relative;top:5px;height:339px;width:700px;" type="StockChart" [options]="fvChartOptions" (load)="saveInstance($event.context, 'fv')"></chart>
   </td><td>
