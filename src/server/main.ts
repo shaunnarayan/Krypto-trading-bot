@@ -1,14 +1,16 @@
 const packageConfig = require("./../../package.json");
 
-const noop = () => {};
-const bindings = ((K) => { try {
-  console.log(K.join('.'));
-  return require('./lib/'+K.join('.'));
-} catch (e) {
-  if (process.version.substring(1).split('.').map((n) => parseInt(n))[0] < 7)
-    throw new Error('K requires Node.js v7.0.0 or greater.');
-  else throw new Error(e);
-}})([packageConfig.name[0], process.platform, process.versions.modules]);
+const noop = () => { };
+const bindings = ((K) => {
+  try {
+    console.log(K.join('.'));
+    return require('./lib/' + K.join('.'));
+  } catch (e) {
+    if (process.version.substring(1).split('.').map((n) => parseInt(n))[0] < 7)
+      throw new Error('K requires Node.js v7.0.0 or greater.');
+    else throw new Error(e);
+  }
+})([packageConfig.name[0], process.platform, process.versions.modules]);
 bindings.uiLoop(noop);
 
 require('events').EventEmitter.prototype._maxListeners = 30;
@@ -38,55 +40,55 @@ import Statistics = require("./statistics");
 import QuotingEngine = require("./quoting-engine");
 
 let defaultQuotingParameters: Models.QuotingParameters = <Models.QuotingParameters>{
-  widthPing:                      2,
-  widthPingPercentage:            0.25,
-  widthPong:                      2,
-  widthPongPercentage:            0.25,
-  widthPercentage:                false,
-  bestWidth:                      true,
-  buySize:                        0.02,
-  buySizePercentage:              7,
-  buySizeMax:                     false,
-  sellSize:                       0.01,
-  sellSizePercentage:             7,
-  sellSizeMax:                    false,
-  pingAt:                         Models.PingAt.BothSides,
-  pongAt:                         Models.PongAt.ShortPingFair,
-  mode:                           Models.QuotingMode.AK47,
-  bullets:                        2,
-  range:                          0.5,
-  fvModel:                        Models.FairValueModel.BBO,
-  targetBasePosition:             1,
-  targetBasePositionPercentage:   50,
-  positionDivergence:             0.9,
-  positionDivergencePercentage:   21,
-  percentageValues:               false,
-  autoPositionMode:               Models.AutoPositionMode.EWMA_LS,
-  aggressivePositionRebalancing:  Models.APR.Off,
-  superTrades:                    Models.SOP.Off,
-  tradesPerMinute:                0.9,
-  tradeRateSeconds:               69,
-  quotingEwmaProtection:          true,
-  quotingEwmaProtectionPeridos:   200,
-  quotingStdevProtection:         Models.STDEV.Off,
-  quotingStdevBollingerBands:     false,
-  quotingStdevProtectionFactor:   1,
-  quotingStdevProtectionPeriods:  1200,
-  ewmaSensiblityPercentage:       0.5,
-  longEwmaPeridos:                200,
-  mediumEwmaPeridos:              100,
-  shortEwmaPeridos:               50,
-  aprMultiplier:                  2,
-  sopWidthMultiplier:             2,
-  delayAPI:                       15,
-  cancelOrdersAuto:               false,
-  cleanPongsAuto:                 0,
-  profitHourInterval:             0.5,
-  audio:                          false,
-  delayUI:                        7
+  widthPing: 2,
+  widthPingPercentage: 0.20,
+  widthPong: 2,
+  widthPongPercentage: 0.20,
+  widthPercentage: true,
+  bestWidth: true,
+  buySize: 0.02,
+  buySizePercentage: 1,
+  buySizeMax: false,
+  sellSize: 0.01,
+  sellSizePercentage: 1,
+  sellSizeMax: false,
+  pingAt: Models.PingAt.BothSides,
+  pongAt: Models.PongAt.ShortPingFair,
+  mode: Models.QuotingMode.AK47,
+  bullets: 2,
+  range: 0.01,
+  fvModel: Models.FairValueModel.wBBO,
+  targetBasePosition: 5,
+  targetBasePositionPercentage: 50,
+  positionDivergence: 0.9,
+  positionDivergencePercentage: 10,
+  percentageValues: true,
+  autoPositionMode: Models.AutoPositionMode.EWMA_LMS,
+  aggressivePositionRebalancing: Models.APR.Off,
+  superTrades: Models.SOP.x3tradesSize,
+  tradesPerMinute: 6,
+  tradeRateSeconds: 29,
+  quotingEwmaProtection: false,
+  quotingEwmaProtectionPeridos: 180,
+  quotingStdevProtection: Models.STDEV.OnFV,
+  quotingStdevBollingerBands: true,
+  quotingStdevProtectionFactor: 1.2,
+  quotingStdevProtectionPeriods: 180,
+  ewmaSensiblityPercentage: 0.5,
+  longEwmaPeridos: 100,
+  mediumEwmaPeridos: 50,
+  shortEwmaPeridos: 25,
+  aprMultiplier: 2,
+  sopWidthMultiplier: 2,
+  delayAPI: 15,
+  cancelOrdersAuto: true,
+  cleanPongsAuto: 3,
+  profitHourInterval: 0.5,
+  audio: true,
+  delayUI: 7
 };
 
-let happyEnding = () => { console.info(new Date().toISOString().slice(11, -1), 'main', 'Error', 'THE END IS NEVER '.repeat(21)+'THE END'); };
+let happyEnding = () => { console.info(new Date().toISOString().slice(11, -1), 'main', 'Error', 'THE END IS NEVER '.repeat(21) + 'THE END'); };
 
 const processExit = () => {
   happyEnding();
@@ -104,8 +106,8 @@ process.on("unhandledRejection", (reason, p) => {
 });
 
 process.on("SIGINT", () => {
-  process.stdout.write("\n"+new Date().toISOString().slice(11, -1)+' main Excellent decision! ');
-  request({url: 'https://api.icndb.com/jokes/random?escape=javascript&limitTo=[nerdy]',json: true,timeout:3000}, (err, resp, body) => {
+  process.stdout.write("\n" + new Date().toISOString().slice(11, -1) + ' main Excellent decision! ');
+  request({ url: 'https://api.icndb.com/jokes/random?escape=javascript&limitTo=[nerdy]', json: true, timeout: 3000 }, (err, resp, body) => {
     if (!err && resp.statusCode === 200) process.stdout.write(body.value.joke);
     process.stdout.write("\n");
     processExit();
@@ -146,10 +148,10 @@ for (const param in defaultQuotingParameters)
 const sqlite = new bindings.DB(exchange, pair.base, pair.quote);
 
 const initParams = Object.assign(defaultQuotingParameters, sqlite.load(Models.Topics.QuotingParametersChange)[0] || {});
-const initTrades = sqlite.load(Models.Topics.Trades).map(x => Object.assign(x, {time: new Date(x.time)}));
-const initRfv = sqlite.load(Models.Topics.FairValue).map(x => Object.assign(x, {time: new Date(x.time)}));
-const initMkt = sqlite.load(Models.Topics.MarketData).map(x => Object.assign(x, {time: new Date(x.time)}));
-const initTBP = sqlite.load(Models.Topics.TargetBasePosition).map(x => Object.assign(x, {time: new Date(x.time)}))[0];
+const initTrades = sqlite.load(Models.Topics.Trades).map(x => Object.assign(x, { time: new Date(x.time) }));
+const initRfv = sqlite.load(Models.Topics.FairValue).map(x => Object.assign(x, { time: new Date(x.time) }));
+const initMkt = sqlite.load(Models.Topics.MarketData).map(x => Object.assign(x, { time: new Date(x.time) }));
+const initTBP = sqlite.load(Models.Topics.TargetBasePosition).map(x => Object.assign(x, { time: new Date(x.time) }))[0];
 
 const publisher = new Publish.Publisher(
   bindings.dbSize,
@@ -182,7 +184,7 @@ const publisher = new Publish.Publisher(
     .registerSnapshot(Models.Topics.ProductAdvertisement, () => [new Models.ProductAdvertisement(
       exchange,
       pair,
-      config.GetString("BotIdentifier").replace('auto',''),
+      config.GetString("BotIdentifier").replace('auto', ''),
       config.GetString("MatryoshkaUrl"),
       packageConfig.homepage,
       gateway.base.minTickIncrement
@@ -201,7 +203,7 @@ const publisher = new Publish.Publisher(
     publisher,
     bindings.evOn,
     bindings.evUp,
-    config.GetString("BotIdentifier").indexOf('auto')>-1
+    config.GetString("BotIdentifier").indexOf('auto') > -1
   );
 
   const orderBroker = new Broker.OrderBroker(
