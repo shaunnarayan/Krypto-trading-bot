@@ -47,10 +47,10 @@ let defaultQuotingParameters: Models.QuotingParameters = <Models.QuotingParamete
   widthPercentage: true,
   bestWidth: true,
   buySize: 0.02,
-  buySizePercentage: 1,
+  buySizePercentage: 5,
   buySizeMax: false,
   sellSize: 0.01,
-  sellSizePercentage: 1,
+  sellSizePercentage: 5,
   sellSizeMax: false,
   pingAt: Models.PingAt.BothSides,
   pongAt: Models.PongAt.ShortPingFair,
@@ -61,31 +61,31 @@ let defaultQuotingParameters: Models.QuotingParameters = <Models.QuotingParamete
   targetBasePosition: 5,
   targetBasePositionPercentage: 50,
   positionDivergence: 0.9,
-  positionDivergencePercentage: 10,
+  positionDivergencePercentage: 20,
   percentageValues: true,
   autoPositionMode: Models.AutoPositionMode.EWMA_LMS,
   aggressivePositionRebalancing: Models.APR.Off,
   superTrades: Models.SOP.x3tradesSize,
-  tradesPerMinute: 6,
+  tradesPerMinute: 2.9,
   tradeRateSeconds: 29,
-  quotingEwmaProtection: false,
+  quotingEwmaProtection: true,
   quotingEwmaProtectionPeridos: 180,
   quotingStdevProtection: Models.STDEV.OnFV,
   quotingStdevBollingerBands: true,
   quotingStdevProtectionFactor: 1.2,
   quotingStdevProtectionPeriods: 180,
   ewmaSensiblityPercentage: 0.5,
-  longEwmaPeridos: 100,
-  mediumEwmaPeridos: 50,
-  shortEwmaPeridos: 25,
+  longEwmaPeridos: 1440,
+  mediumEwmaPeridos: 720,
+  shortEwmaPeridos: 360,
   aprMultiplier: 2,
   sopWidthMultiplier: 2,
   delayAPI: 15,
   cancelOrdersAuto: true,
-  cleanPongsAuto: 3,
+  cleanPongsAuto: 1,
   profitHourInterval: 0.5,
   audio: true,
-  delayUI: 7
+  delayUI: 3
 };
 
 let happyEnding = () => { console.info(new Date().toISOString().slice(11, -1), 'main', 'Error', 'THE END IS NEVER '.repeat(21) + 'THE END'); };
@@ -152,6 +152,17 @@ const initTrades = sqlite.load(Models.Topics.Trades).map(x => Object.assign(x, {
 const initRfv = sqlite.load(Models.Topics.FairValue).map(x => Object.assign(x, { time: new Date(x.time) }));
 const initMkt = sqlite.load(Models.Topics.MarketData).map(x => Object.assign(x, { time: new Date(x.time) }));
 const initTBP = sqlite.load(Models.Topics.TargetBasePosition).map(x => Object.assign(x, { time: new Date(x.time) }))[0];
+
+console.log("---------- LOAD DB -------------\n\n\n\n");
+console.log("\n\n\n\nTrades:\n\n\n\n");
+console.log(JSON.stringify(initTrades));
+console.log("\n\n\n\nFair Values:\n\n\n\n");
+console.log(JSON.stringify(initRfv));
+console.log("\n\n\n\nMarket Data:\n\n\n\n");
+console.log(JSON.stringify(initMkt));
+console.log("\n\n\n\nTarget Base Price:\n\n\n\n");
+console.log(JSON.stringify(initTBP));
+console.log("\n\n\n\n--------------------------------");
 
 const publisher = new Publish.Publisher(
   bindings.dbSize,
