@@ -74,7 +74,7 @@ export class OrdersComponent implements OnInit {
         }
       },
       {
-        width: 74, field: 'price', headerName: 'px',
+        width: 110, field: 'price', headerName: 'px',
         sort: 'desc', cellClass: (params) => {
           return (params.data.side === 'Ask') ? "sell" : "buy";
         }, cellRendererFramework: QuoteCurrencyCellComponent
@@ -85,7 +85,7 @@ export class OrdersComponent implements OnInit {
         }, cellRendererFramework: BaseCurrencyCellComponent
       },
       {
-        width: 74, field: 'value', headerName: 'value', cellClass: (params) => {
+        width: 110, field: 'value', headerName: 'value', cellClass: (params) => {
           return (params.data.side === 'Ask') ? "sell" : "buy";
         }, cellRendererFramework: QuoteCurrencyCellComponent
       },
