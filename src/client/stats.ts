@@ -189,6 +189,7 @@ export class StatsComponent implements OnInit {
       color: '#af451e',
       tooltip: { pointFormatter: this.pointFormatterBase },
       yAxis: 1,
+      visible: false,
       data: []
     }, {
       name: 'STDEV TopAsk',
@@ -197,6 +198,7 @@ export class StatsComponent implements OnInit {
       color: '#af451e',
       tooltip: { pointFormatter: this.pointFormatterBase },
       yAxis: 1,
+      visible: false,
       data: []
     }, {
       name: 'STDEV TopBid',
@@ -205,6 +207,7 @@ export class StatsComponent implements OnInit {
       color: '#af451e',
       tooltip: { pointFormatter: this.pointFormatterBase },
       yAxis: 1,
+      visible: false,
       data: []
     }, {
       name: 'STDEV BBFair',
@@ -223,6 +226,7 @@ export class StatsComponent implements OnInit {
       color: '#af451e',
       fillOpacity: 0.2,
       zIndex: -1,
+      visible: false,
       data: []
     }, {
       name: 'STDEV BBTop',
@@ -232,6 +236,7 @@ export class StatsComponent implements OnInit {
       color: '#af451e',
       fillOpacity: 0.2,
       zIndex: -1,
+      visible: false,
       data: []
     }]
   };

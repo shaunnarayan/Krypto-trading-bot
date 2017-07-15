@@ -153,16 +153,16 @@ const initRfv = sqlite.load(Models.Topics.FairValue).map(x => Object.assign(x, {
 const initMkt = sqlite.load(Models.Topics.MarketData).map(x => Object.assign(x, { time: new Date(x.time) }));
 const initTBP = sqlite.load(Models.Topics.TargetBasePosition).map(x => Object.assign(x, { time: new Date(x.time) }))[0];
 
-console.log("---------- LOAD DB -------------\n\n\n\n");
-console.log("\n\n\n\nTrades:\n\n\n\n");
-console.log(JSON.stringify(initTrades));
-console.log("\n\n\n\nFair Values:\n\n\n\n");
-console.log(JSON.stringify(initRfv));
-console.log("\n\n\n\nMarket Data:\n\n\n\n");
-console.log(JSON.stringify(initMkt));
-console.log("\n\n\n\nTarget Base Price:\n\n\n\n");
-console.log(JSON.stringify(initTBP));
-console.log("\n\n\n\n--------------------------------");
+// console.log("---------- LOAD DB -------------\n\n\n\n");
+// console.log("\n\n\n\nTrades:\n\n\n\n");
+// console.log(JSON.stringify(initTrades));
+// console.log("\n\n\n\nFair Values:\n\n\n\n");
+// console.log(JSON.stringify(initRfv));
+// console.log("\n\n\n\nMarket Data:\n\n\n\n");
+// console.log(JSON.stringify(initMkt));
+// console.log("\n\n\n\nTarget Base Price:\n\n\n\n");
+// console.log(JSON.stringify(initTBP));
+// console.log("\n\n\n\n--------------------------------");
 
 const publisher = new Publish.Publisher(
   bindings.dbSize,
