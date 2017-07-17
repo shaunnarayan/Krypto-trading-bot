@@ -155,7 +155,6 @@ export class StatsComponent implements OnInit {
       type: 'spline',
       color: '#ffff00',
       tooltip: { pointFormatter: this.pointFormatterBase },
-      visible: false,
       data: []
     }, {
       name: 'EWMA Long',
