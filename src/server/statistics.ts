@@ -79,9 +79,19 @@ export class EWMAProtectionCalculator {
     private _timeProvider: Utils.ITimeProvider,
     private _fv: FairValue.FairValueEngine,
     private _qpRepo: QuotingParameters.QuotingParametersRepository,
-    private _evUp
+    private _evUp,
+    initRfv: Models.RegularFairValue[]
   ) {
+    if (initRfv !== null)
+      this.initialize(initRfv.map((r: Models.RegularFairValue) => r.value));
     _timeProvider.setInterval(this.onTick, moment.duration(1, "minutes"));
+  }
+
+  initialize(seedData: number[]) {
+    for (var i = seedData.length; i--;) {
+      this.setLatest(computeEwma(seedData[i], this._latest, this._qpRepo.latest.quotingEwmaProtectionPeridos));
+      console.log('Seeding EWMA: ' + this._latest);
+    }
   }
 
   private onTick = () => {
@@ -89,14 +99,14 @@ export class EWMAProtectionCalculator {
       console.warn(new Date().toISOString().slice(11, -1), 'ewma', 'Unable to compute value');
       return;
     }
-
+    
     this.setLatest(computeEwma(this._fv.latestFairValue.price, this._latest, this._qpRepo.latest.quotingEwmaProtectionPeridos));
   };
 
   private _latest: number = null;
   public get latest() { return this._latest; }
   private setLatest = (v: number) => {
-    if (Math.abs(v - this._latest) > 1e-3) {
+    if (Math.abs(v - this._latest) > Number.EPSILON) {
       this._latest = v;
       this._evUp('EWMAProtectionCalculator');
     }

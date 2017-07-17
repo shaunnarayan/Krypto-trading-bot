@@ -274,7 +274,8 @@ const publisher = new Publish.Publisher(
       timeProvider,
       fvEngine,
       paramsRepo,
-      bindings.evUp
+      bindings.evUp,
+      initRfv
     ),
     new Statistics.STDEVProtectionCalculator(
       timeProvider,
