@@ -90,7 +90,7 @@ export class EWMAProtectionCalculator {
   initialize(seedData: number[]) {
     for (var i = seedData.length; i--;) {
       this.setLatest(computeEwma(seedData[i], this._latest, this._qpRepo.latest.quotingEwmaProtectionPeridos));
-      console.log('Seeding EWMA: ' + this._latest);
+      //console.log('Seeding EWMA: ' + this._latest);
     }
   }
 
