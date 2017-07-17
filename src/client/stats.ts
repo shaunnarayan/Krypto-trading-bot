@@ -180,6 +180,7 @@ export class StatsComponent implements OnInit {
       lineWidth: 1,
       color: '#af451e',
       tooltip: { pointFormatter: this.pointFormatterBase },
+      visible: false,
       yAxis: 1,
       data: []
     }, {
@@ -217,6 +218,7 @@ export class StatsComponent implements OnInit {
       color: '#af451e',
       fillOpacity: 0.2,
       zIndex: -1,
+      visible: false,
       data: []
     }, {
       name: 'STDEV BBTops',
